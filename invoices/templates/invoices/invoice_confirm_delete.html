@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Supprimer la facture {{ invoice.invoice_number }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h2 class="mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Confirmer la suppression
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Attention !</strong> Cette action est irréversible.
+                </div>
+
+                <p>Êtes-vous sûr de vouloir supprimer la facture suivante ?</p>
+
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">Facture {{ invoice.invoice_number }}</h5>
+                        <p class="card-text">
+                            <strong>Montant total:</strong> {{ invoice.total_amount }}€<br>
+                            <strong>Nombre d'articles:</strong> {{ invoice.get_total_items }}<br>
+                            <strong>Créée le:</strong> {{ invoice.created_at|date:"d/m/Y à H:i" }}
+                        </p>
+
+                        {% if invoice.invoiceitem_set.all %}
+                            <h6>Articles inclus:</h6>
+                            <ul class="list-unstyled">
+                                {% for item in invoice.invoiceitem_set.all %}
+                                    <li>• {{ item.product.name }} x{{ item.quantity }} ({{ item.get_total_price }}€)</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <form method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Oui, supprimer
+                    </button>
+                </form>
+                <a href="{% url 'invoices:invoice_detail' invoice.pk %}" class="btn btn-secondary ms-2">
+                    <i class="bi bi-x"></i> Annuler
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
