@@ -47,7 +47,7 @@ Une application web Django complète pour la gestion de produits et la générat
 1. **Cloner le repository**
    ```bash
    git clone https://github.com/MyGesDfu/Generateur-de-factures
-   cd "Générateur de factures"
+   cd "Generateur de factures"
    ```
 
 2. **Installer les dépendances**
